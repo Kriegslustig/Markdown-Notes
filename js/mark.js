@@ -15,16 +15,6 @@ var createMarkElement = (function () {
       }
     },
     {
-      description: 'Linebreaks',
-      regex: /\n/g,
-      tag: '<br>'
-    },
-    {
-      description: 'Double spaces',
-      regex: /\ \ /g,
-      tag: '&nbsp;&nbsp;'
-    },
-    {
       description: 'Italic text',
       regex: /\ (\*[^\n\*$]*\*)/g,
       tag: function ($0, $1) {
@@ -33,10 +23,25 @@ var createMarkElement = (function () {
     },
     {
       description: 'Code blocks',
-      regex: /(^|\ )```([^$]*)```/gm,
+      regex: /(^|\ )```([^$]{0,100})```/gm,
       tag: function ($0,$1,$2) {
         return $1 + '```<code>' + $2 + '</code>```';
       }
+    },
+    {
+      description: 'Spaces after linebreaks',
+      regex: /^\ /gm,
+      tag: '&nbsp;'
+    },
+    {
+      description: 'Linebreaks',
+      regex: /\n/g,
+      tag: '<br>'
+    },
+    {
+      description: 'Double spaces',
+      regex: /\ (?=\ )/g,
+      tag: '&nbsp;'
     },
   ],
   _node,

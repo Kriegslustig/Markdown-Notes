@@ -22,11 +22,20 @@ body {
   padding: 0;
   margin: 0;
   border: none;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
 }
 
 .markdown__textarea {
   opacity: .4;
+}
+
+code {
+  color: tomato;
+}
+
+.markdown__cover,
+.markdown__textarea,
+code {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
