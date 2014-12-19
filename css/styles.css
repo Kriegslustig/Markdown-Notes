@@ -1,0 +1,32 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.markdown {
+  position: relative;
+  font-family: courier;
+  font-size: 1rem;
+  line-height: 1.6rem;
+}
+
+.markdown__cover {
+  z-index: -1;
+}
+
+.markdown__cover,
+.markdown__textarea {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.markdown__textarea {
+  opacity: .4;
+}
