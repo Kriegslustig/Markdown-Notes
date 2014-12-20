@@ -32,9 +32,19 @@ code {
   color: tomato;
 }
 
+.code_block {
+  float: left;
+  width: 100%;
+  background-color: #eee;
+  margin-top: -.2rem;
+  padding: .2rem 0;
+  margin-bottom: -.2rem;
+}
+
 .markdown__cover,
 .markdown__textarea,
-code {
+code,
+.code_block {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;

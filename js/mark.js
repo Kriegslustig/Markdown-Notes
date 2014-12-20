@@ -2,13 +2,14 @@ window.addEventListener('load', function () {
 
   var markElem = createMarkElement();
   markElem.init(document.querySelector('.markdown__textarea'));
+  document.querySelector('.markdown__textarea').focus();
 
 }, false);
 
 var createMarkElement = (function () {
   var _markSyntax = [
     {
-      description: 'Bold text',
+      description: 'Header 1 text',
       regex: /^(#\ ([^\n$]*))/gm,
       tag: function ($0, $1) {
         return '<b>' + $1 + '</b>';
@@ -22,10 +23,17 @@ var createMarkElement = (function () {
       }
     },
     {
-      description: 'Code blocks',
-      regex: /(^|\ )```([^$]{0,100})```/gm,
+      description: 'Code block',
+      regex: /(^|\ )`{3}\n([^$]*)\n`{3}/gm,
       tag: function ($0,$1,$2) {
-        return $1 + '```<code>' + $2 + '</code>```';
+        return $1 + '&#0096;&#0096;&#0096;\n<code class="code_block">' + $2 + '</code>\n&#0096;&#0096;&#0096;';
+      }
+    },
+    {
+      description: 'Inline code',
+      regex: /(^|\ )`{3}([^$]*)`{3}/gm,
+      tag: function ($0,$1,$2) {
+        return $1 + '&#0096;&#0096;&#0096;<code>' + $2 + '</code>&#0096;&#0096;&#0096;';
       }
     },
     {
@@ -35,7 +43,7 @@ var createMarkElement = (function () {
     },
     {
       description: 'Linebreaks',
-      regex: /\n/g,
+      regex: /\n/gm,
       tag: '<br>'
     },
     {
