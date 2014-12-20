@@ -26,6 +26,7 @@ body {
 
 .markdown__textarea {
   opacity: .4;
+  outline: none;
 }
 
 code {
