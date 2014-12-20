@@ -5,6 +5,8 @@ body {
 
 .markdown {
   position: relative;
+  width: 100vw;
+  height: 100vh;
   font-family: courier;
   font-size: 1rem;
   line-height: 1.6rem;
@@ -49,4 +51,21 @@ code,
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+}
+
+.markdown__command_line {
+  position: absolute;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  left: 0;
+  bottom: 0;
+  height: 2rem;
+  width: 100%;
+  z-index: 2;
+  padding: 0 1rem;
+}
+
+.markdown__command_line:focus {
+  outline: none;
 }

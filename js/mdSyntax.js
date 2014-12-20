@@ -8,7 +8,7 @@ markElem.addSyntax([
   },
   {
     description: 'Italic text',
-    regex: /\ (\*[^\n\*$]*\*)/g,
+    regex: /(^|\ )(\*[^\n\*$]*\*)/gm,
     tag: function ($0, $1) {
       return ' <i>' + $1 + '</i>';
     }
