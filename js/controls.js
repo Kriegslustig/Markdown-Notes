@@ -10,8 +10,9 @@ var createControls = (function () {
   _keyListener = {
     'S': function () {
       _textarea.dispatchEvent(_events.save);
-    }
-  };
+    },
+  },
+  _numberKeys = ['0','1','2','3','4','5','6','7','8','9'];
 
   function _createSaveEvent () {
     _events.save = new CustomEvent('save');
@@ -27,6 +28,8 @@ var createControls = (function () {
         if(_keyListener[key]) {
           e.preventDefault();
           _keyListener[key]();
+        } else if ( _numberKeys.indexOf(key) > -1 ) {
+          storage.loadItem(parseInt(key));
         }
       }
     }, false);

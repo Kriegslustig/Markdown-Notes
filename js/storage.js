@@ -23,8 +23,9 @@ var createStorage = (function () {
   }
 
   function _save (content, title, index) {
+    console.log([content, title, index]);
     index = (index === 'undefined' ? _noteIndex.length : index);
-    title = title || index;
+    title = (title === 'undefined' ? index : title);
     var note = {
       index: index,
       title: title,
@@ -42,11 +43,13 @@ var createStorage = (function () {
   }
 
   function _loadItem (index) {
-    index = index || 1;
+    index = (index === undefined ? 1 : index);
     if(_noteIndex[index]) {
       _textarea.id = _noteIndex[index].index;
       _textarea.attributes.title = _noteIndex[index].title;
       _textarea.value = _noteIndex[index].content;
+    } else {
+      _save('', index, index);
     }
   }
 
