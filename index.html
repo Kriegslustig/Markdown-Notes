@@ -5,12 +5,13 @@
   <title>Markdown Notes</title>
   <link rel="stylesheet" href="css/styles.css">
 
-  <script type="text/javascript" src="js/storage.js"></script>
+  <script type="text/javascript" src="js/mdNotStorage.js"></script>
 
-  <script type="text/javascript" src="js/controls.js"></script>
+  <script type="text/javascript" src="js/mdNotMark.js"></script>
+  <script type="text/javascript" src="js/mdNotSyntax.js"></script>
+  <script type="text/javascript" src="js/mdNotTree.js"></script>
 
-  <script type="text/javascript" src="js/mark.js"></script>
-  <script type="text/javascript" src="js/mdSyntax.js"></script>
+  <script type="text/javascript" src="js/mdNotControls.js"></script>
 </head>
 <body>
   <article class="markdown">
@@ -18,6 +19,9 @@
     <textarea class="markdown__textarea">Title
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet obcaecati quod, repellendus culpa dolorum aut doloribus nesciunt quae? Id commodi tempore, ipsa aperiam repellat ipsam. Pariatur architecto deserunt sint quaerat.</textarea>
     <div class="markdown__cover" ></div>
+    <nav class="markdown__tree mdnot_tree">
+      <ul class="mdnot_tree__list"></ul>
+    </nav>
   </article>
 </body>
 </html>

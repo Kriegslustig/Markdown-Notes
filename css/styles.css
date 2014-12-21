@@ -3,6 +3,10 @@ body {
   margin: 0;
 }
 
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 .markdown {
   position: relative;
   width: 100vw;
@@ -24,6 +28,16 @@ body {
   padding: 0;
   margin: 0;
   border: none;
+  word-wrap: break-word;
+}
+
+@media all and (min-width: 690px) {
+  .markdown__cover,
+  .markdown__textarea {
+    width: 690px;
+    left: 50%;
+    margin-left: -345px;
+  }
 }
 
 .markdown__textarea {
@@ -64,8 +78,25 @@ code,
   width: 100%;
   z-index: 2;
   padding: 0 1rem;
+  border: none;
+  border-top: 1px solid grey;
 }
 
 .markdown__command_line:focus {
   outline: none;
+}
+
+.mdnot_tree {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20rem;
+  height: 100%;
+  z-index: 1;
+  background-color: #fff;
+  border-left: 1px solid grey;
+}
+
+.mdnot_tree--close {
+  display: none;
 }

@@ -31,6 +31,11 @@ var createMarkElement = (function () {
         _checkSyntax();
       }, 20);
     }, false);
+    window.addEventListener('hashchange', function () {
+      setTimeout( function () {
+        _checkSyntax();
+      }, 20);
+    }, false)
   }
 
   return {

@@ -1,6 +1,7 @@
 window.addEventListener('load', function () {
-  var controls = createControls();
+  storage.init();
   controls.init();
+  mdNotTree.init();
 }, false);
 
 var createControls = (function () {
@@ -15,6 +16,12 @@ var createControls = (function () {
     'R': function () {
       _commandLine.value = 'title: ';
       _commandLine.focus();
+    },
+    'T': function () {
+      mdNotTree.toggleTree();
+    },
+    'N': function () {
+      storage.newNote();
     }
   },
   _numberKeys = ['0','1','2','3','4','5','6','7','8','9'],
@@ -41,7 +48,7 @@ var createControls = (function () {
           e.preventDefault();
           _keyListener[key]();
         } else if ( _numberKeys.indexOf(key) > -1 ) {
-          storage.loadItem(parseInt(key));
+          location.href = location.href.split('#')[0] + '#note=' + key;
         }
       }
     }, false);
@@ -63,14 +70,24 @@ var createControls = (function () {
         }
       }
     }, false);
+
+    window.addEventListener('hashchange', function () {
+      key = location.href.split('#note=')[1];
+      storage.loadItem(parseInt(key));
+    }, false);
   }
 
   return {
-    init: function () {
+    init: function (callback) {
       _textarea = document.querySelector('.markdown__textarea');
       _commandLine = document.querySelector('.markdown__command_line');
       _createSaveEvent();
       _setKeyListener();
+      location.href = location.href.split('#')[0] + '#note=0';
     }
   }
 });
+
+var storage = createStorage();
+var mdNotTree = createTree();
+var controls = createControls();

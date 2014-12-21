@@ -1,13 +1,9 @@
-window.addEventListener('load', function () {
-  storage.init();
-}, false);
-
 var createStorage = (function () {
   var _noteIndex = [],
   _storagePrefix = 'note_',
   _textarea;
 
-  function _loadNotes (callback) {
+  function _loadNotes () {
     var found = true,
     i = 0;
     while(found) {
@@ -19,7 +15,6 @@ var createStorage = (function () {
         break;
       }
     }
-    callback();
   }
 
   function _save (content, title, index) {
@@ -50,20 +45,23 @@ var createStorage = (function () {
       _textarea.value = _noteIndex[index].content;
     } else {
       _save('', index, index);
-      document.title = index;
     }
   }
 
   return {
     init: function () {
       _textarea = document.querySelector('.markdown__textarea');
-      _loadNotes(storage.loadItem);
       _setEventListeners();
+      _loadNotes();
     },
     loadItem: function (index) {
       _loadItem(index);
-    }
+    },
+    getIndex: function () {
+      return _noteIndex;
+    },
+    newNote: function () {
+      _save('', index, index);
+    },
   }
 });
-
-var storage = createStorage();
