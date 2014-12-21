@@ -96,13 +96,35 @@ code,
   background-color: #fff;
   border-left: 1px solid grey;
   box-shadow: 0 0 12px 2px rgba(0,0,0,.1);
+  opacity: 0;
   transition: .4s;
   transition-property: opacity opacity;
+  transform: translateX(20rem);
 }
 
-.mdnot_tree--close {
+.mdnot_tree--open {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.markdown__help {
+  position: absolute;
+  width: 50%;
+  height: 60%;
+  left: 25%;
+  top: 20%;
+  background-color: rgba(0,0,0,.1);
+  padding: 2rem;
   opacity: 0;
-  transform: translateX(20rem);
+  word-wrap: break-word;
+  transform: translateY(100vh);
+  transition: .6s;
+  transition-property: opacity transform;
+}
+
+.markdown__help--open {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 i {

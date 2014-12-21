@@ -3,7 +3,7 @@ var createTree = (function () {
   _treeElem,
   _listElem,
   _textarea,
-  _treeToggleClass ='mdnot_tree--close',
+  _treeToggleClass ='mdnot_tree--open',
   _leafTemplate = document.createElement('li');
 
   _leafTemplate.className = 'mdnot_tree__leaf';

@@ -15,10 +15,25 @@
 </head>
 <body>
   <article class="markdown">
+    <aside class="markdown__help">
+      <p>
+        S:
+        &nbsp;&nbsp;_textarea.dispatchEvent(_events.save);<br><br>
+        R:<br>
+        &nbsp;&nbsp;_commandLine.value = 'title: ';<br>
+        &nbsp;&nbsp;_commandLine.focus();<br><br>
+        T:<br>
+        &nbsp;&nbsp;mdNotTree.toggleTree();<br><br>
+        N:<br>
+        &nbsp;&nbsp;storage.newNote();<br><br>
+        H:<br>
+        &nbsp;&nbsp;_toggleHelp();<br>
+      </p>
+    </aside>
     <input type="text" class="markdown__command_line">
     <textarea class="markdown__textarea">Title
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet obcaecati quod, repellendus culpa dolorum aut doloribus nesciunt quae? Id commodi tempore, ipsa aperiam repellat ipsam. Pariatur architecto deserunt sint quaerat.</textarea>
-    <div class="markdown__cover" ></div>
+    <main class="markdown__cover" ></main>
     <nav class="markdown__tree mdnot_tree">
       <ul class="mdnot_tree__list"></ul>
     </nav>
