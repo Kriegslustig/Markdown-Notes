@@ -13,7 +13,7 @@ var createTree = (function () {
     _listElem.innerHTML = '';
     _notesIndex.forEach(function (val, index, array) {
       var _thisLeaf = _leafTemplate.cloneNode();
-      _thisLeaf.innerHTML = '<a href="#note='+ val.index +'">' + val.index + ': ' + val.title + '</a>';
+      _thisLeaf.innerHTML = '<a class="mdnot_tree__link" href="#note='+ val.index +'"><p>' + val.index + ': ' + val.title + '</p></a>';
       _listElem.appendChild(_thisLeaf);
     });
   }

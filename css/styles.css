@@ -107,6 +107,32 @@ code,
   transform: translateX(0);
 }
 
+.mdnot_tree__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 1rem 1rem 1rem;
+}
+
+.mdnot_tree__link,
+.mdnot_tree__link:visited {
+  display: block;
+  width: 100%;
+  padding: .5rem 0;
+  text-decoration: none;
+  color: #000;
+}
+
+.mdnot_tree__link:focus p,
+.mdnot_tree__link:hover p,
+.mdnot_tree__link:active p {
+  background-color: rgba(0,0,0,.1);
+  color: inherit;
+}
+
+.mdnot_tree__link p {
+  margin: 0;
+}
+
 .markdown__help {
   position: absolute;
   width: 50%;

@@ -72,6 +72,7 @@ var createControls = (function () {
         _commandLine.value = '';
         if(_commands[input[0]]) {
           _commands[input[0]](input[1]);
+          _textarea.focus;
         } else {
           console.log('No such command');
         }

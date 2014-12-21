@@ -61,7 +61,7 @@ var createStorage = (function () {
       return _noteIndex;
     },
     newNote: function () {
-      _save('', index, index);
+      _save('', _noteIndex.length, _noteIndex.length);
     },
   }
 });
