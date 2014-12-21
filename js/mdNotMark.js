@@ -1,8 +1,3 @@
-window.addEventListener('load', function () {
-  markElem.init(document.querySelector('.markdown__textarea'));
-  document.querySelector('.markdown__textarea').focus();
-}, false);
-
 var createMarkElement = (function () {
   var _node,
   _cover,
@@ -54,5 +49,3 @@ var createMarkElement = (function () {
     },
   }
 });
-
-var markElem = createMarkElement();

@@ -2,6 +2,8 @@ window.addEventListener('load', function () {
   storage.init();
   controls.init();
   mdNotTree.init();
+  markElem.init(document.querySelector('.markdown__textarea'));
+  document.querySelector('.markdown__textarea').focus();
 }, false);
 
 var createControls = (function () {
@@ -72,9 +74,13 @@ var createControls = (function () {
     }, false);
 
     window.addEventListener('hashchange', function () {
-      key = location.href.split('#note=')[1];
-      storage.loadItem(parseInt(key));
+      _loadActiveNote();
     }, false);
+  }
+
+  function _loadActiveNote () {
+    key = location.href.split('#note=')[1];
+    storage.loadItem(parseInt(key));
   }
 
   return {
@@ -84,6 +90,7 @@ var createControls = (function () {
       _createSaveEvent();
       _setKeyListener();
       location.href = location.href.split('#')[0] + '#note=0';
+      _loadActiveNote();
     }
   }
 });
@@ -91,3 +98,4 @@ var createControls = (function () {
 var storage = createStorage();
 var mdNotTree = createTree();
 var controls = createControls();
+var markElem = createMarkElement();

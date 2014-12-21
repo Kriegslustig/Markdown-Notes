@@ -41,7 +41,7 @@ body {
 }
 
 .markdown__textarea {
-  opacity: .4;
+  opacity: .3;
   outline: none;
 }
 
@@ -99,4 +99,8 @@ code,
 
 .mdnot_tree--close {
   display: none;
+}
+
+i {
+  font-weight: 100;
 }

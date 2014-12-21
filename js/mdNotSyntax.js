@@ -7,10 +7,17 @@ markElem.addSyntax([
     }
   },
   {
+    description: 'Bold text',
+    regex: /(^|\ )(\*\*[^\n\*$]*\*\*)/gm,
+    tag: function ($0, $1, $2) {
+      return $1 + '<b>' + $2 + '</b>';
+    }
+  },
+  {
     description: 'Italic text',
     regex: /(^|\ )(\*[^\n\*$]*\*)/gm,
-    tag: function ($0, $1) {
-      return ' <i>' + $1 + '</i>';
+    tag: function ($0, $1, $2) {
+      return $1 + '<i>' + $2 + '</i>';
     }
   },
   {
