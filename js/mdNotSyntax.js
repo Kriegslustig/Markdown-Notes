@@ -1,11 +1,15 @@
-markElem.addSyntax([
-  {
-    description: 'Header 1 text',
-    regex: /^(#\ ([^\n$]*))/gm,
+for (var i = 1; i < 6; i++) {
+  markElem.addSyntax({
+    description: 'Header ' + i + ' text',
+    regex: new RegExp('^(#{' + i + '}\ ([^\n$]*))(?=\n|$)', 'gm'),
     tag: function ($0, $1) {
-      return '<b>' + $1 + '</b>';
+      return '<h' + i + '>' + $1 + '</h' + i + '>';
     }
-  },
+  });
+  console.log(new RegExp('^(#{' + i + '}\ ([^\n$]*))', 'gm'))
+};
+
+markElem.addSyntax([
   {
     description: 'Bold text',
     regex: /(^|\ )(\*\*[^\n\*$]*\*\*)/gm,
@@ -49,4 +53,4 @@ markElem.addSyntax([
     regex: /\ (?=\ )/g,
     tag: '&nbsp;'
   },
-])
+]);

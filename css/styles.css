@@ -95,12 +95,29 @@ code,
   z-index: 1;
   background-color: #fff;
   border-left: 1px solid grey;
+  box-shadow: 0 0 12px 2px rgba(0,0,0,.1);
+  transition: .4s;
+  transition-property: opacity opacity;
 }
 
 .mdnot_tree--close {
-  display: none;
+  opacity: 0;
+  transform: translateX(20rem);
 }
 
 i {
   font-weight: 100;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 800;
+  padding: 0;
+  margin: 0;
 }
