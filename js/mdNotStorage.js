@@ -4,6 +4,7 @@ var createStorage = (function () {
   _textarea;
 
   function _loadNotes () {
+    _noteIndex = [];
     var found = true,
     i = 0;
     while(found) {
@@ -48,6 +49,21 @@ var createStorage = (function () {
     }
   }
 
+  function _updateIndex () {
+    for (var i = 0; i < _noteIndex.length; i++) {
+      var currentIndex = _noteIndex[i].index;
+      localStorage.removeItem(_storagePrefix + currentIndex);
+      _noteIndex[i].index = i;
+      localStorage.setItem(_storagePrefix + i, JSON.stringify(_noteIndex[i]));
+    };
+    _loadNotes();
+  }
+
+  function _removeItem (index) {
+    localStorage.removeItem(_storagePrefix + index);
+    _noteIndex.splice(index, 1);
+}
+
   return {
     init: function () {
       _textarea = document.querySelector('.markdown__textarea');
@@ -61,7 +77,13 @@ var createStorage = (function () {
       return _noteIndex;
     },
     newNote: function () {
-      _save('', _noteIndex.length, _noteIndex.length);
+      var index = _noteIndex.length;
+      _save('', index, index);
+      return index;
     },
+    deleteNote: function (index) {
+      _removeItem(index)
+      _updateIndex();
+    }
   }
 });

@@ -22,6 +22,9 @@ var createTree = (function () {
     _textarea.addEventListener('save', function () {
       _updateTree();
     }, false);
+    _textarea.addEventListener('delete', function () {
+      _updateTree();
+    }, false);
   }
 
   function _toggleTree () {
