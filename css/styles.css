@@ -156,6 +156,7 @@ code,
 }
 
 .markdown__help {
+  z-index: 10;
   position: absolute;
   width: 50%;
   height: 60%;
@@ -168,6 +169,17 @@ code,
   transform: translateY(100vh);
   transition: .6s;
   transition-property: opacity transform;
+}
+
+.help {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.help__item {
+  font-size: 1.2em;
+  line-height: 2rem;
 }
 
 .markdown__help--open {

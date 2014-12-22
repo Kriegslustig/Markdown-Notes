@@ -16,19 +16,15 @@
 <body>
   <article class="markdown">
     <aside class="markdown__help">
-      <p>
-        S:
-        &nbsp;&nbsp;_textarea.dispatchEvent(_events.save);<br><br>
-        R:<br>
-        &nbsp;&nbsp;_commandLine.value = 'title: ';<br>
-        &nbsp;&nbsp;_commandLine.focus();<br><br>
-        T:<br>
-        &nbsp;&nbsp;mdNotTree.toggleTree();<br><br>
-        N:<br>
-        &nbsp;&nbsp;storage.newNote();<br><br>
-        H:<br>
-        &nbsp;&nbsp;_toggleHelp();<br>
-      </p>
+      <ul class="help">
+        <li class="help__item"><a href="javascript: controls.triggerAction('N')">N: Create a note</a></li>
+        <li class="help__item"><a href="javascript: controls.triggerAction('S')">S: Save the active note</a></li>
+        <li class="help__item"><a href="javascript: controls.triggerAction('D')">D: Delete the active note</a></li>
+        <li class="help__item"><a href="javascript: controls.triggerAction('R')">R: Rename a note</a></li>
+        <li class="help__item"><a href="javascript: controls.triggerAction('T')">T: Toggle the tree</a></li>
+        <li class="help__item"><a href="javascript: controls.triggerAction('H')">H: Toggle the help dialoge</a></li>
+        <li class="help__item"><a href="javascript: controls.triggerAction('V')">V: Toggle the view-mode</a></li>
+      </ul>
     </aside>
     <input type="text" class="markdown__command_line">
     <textarea class="markdown__textarea">Title

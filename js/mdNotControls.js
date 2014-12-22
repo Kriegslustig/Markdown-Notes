@@ -157,6 +157,9 @@ var createControls = (function () {
       } else {
         _loadActiveNote();
       }
+    },
+    triggerAction: function (letter) {
+      _keyListener[letter]();
     }
   }
 });
