@@ -38,6 +38,20 @@ markElem.addSyntax([
     }
   },
   {
+    description: 'Images',
+    regex: /(^|\ )(\!\[[^\n$]*\]\(([^\n$\ \)]*)\))/gm,
+    tag: function ($0, $1, $2, $3) {
+      return $1 + '<i>' + $2 + '</i>';
+    }
+  },
+  {
+    description: 'Links',
+    regex: /(^|\ )(\[[^\n$]*\]\(([^\n$\ \)]*)\))/gm,
+    tag: function ($0, $1, $2, $3) {
+      return $1 + '<a href="' + $3 + '">' + $2 + '</a>';
+    }
+  },
+  {
     description: 'Spaces after linebreaks',
     regex: /^\ /gm,
     tag: '&nbsp;'
