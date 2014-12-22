@@ -2,8 +2,9 @@ window.addEventListener('load', function () {
   storage.init();
   controls.init();
   mdNotTree.init();
-  markElem.init(document.querySelector('.markdown__textarea'));
-  document.querySelector('.markdown__textarea').focus();
+  markElem.init(controls.getTextarea(), controls.getCover());
+  controls.getTextarea().focus();
+  controls.initEditor();
 }, false);
 
 var createControls = (function () {
@@ -102,10 +103,13 @@ var createControls = (function () {
     }, false);
   }
 
-  function _loadActiveNote () {
+  function _loadActiveNote (viewToggle) {
     index = parseInt(location.href.split('#note=')[1]);
     storage.loadItem(index);
     _currentNode = index;
+    if(viewToggle) {
+      _toggleViewMode();
+    }
   }
 
   function _toggleHelp () {
@@ -116,9 +120,12 @@ var createControls = (function () {
     }
   }
 
-  function _openNote(index) {
+  function _openNote(index, viewToggle) {
     location.href = location.href.split('#')[0] + '#note=' + index;
     _loadActiveNote();
+    if(viewToggle) {
+      _toggleViewMode();
+    }
   }
 
   function _delete (index) {
@@ -132,12 +139,20 @@ var createControls = (function () {
   }
 
   function _toggleViewMode () {
+    var prefix = '&';
+    if(location.href.indexOf('#') < 0) {
+      prefix = '#';
+    }
     if(markElem.toggleViewMode()) {
       _textarea.className += ' ' + _areaInactiveToggleClass;
       _cover.className += ' ' + _coverViewToggleClass;
+      if(location.href.indexOf('view') < 0) {
+        location.href += '&view';
+      }
     } else {
       _cover.className = _cover.className.replace(' ' + _coverViewToggleClass, '');
       _textarea.className = _textarea.className.replace(' ' + _areaInactiveToggleClass, '');
+      location.href = location.href.replace(prefix + 'view', '');
     }
   }
 
@@ -147,20 +162,28 @@ var createControls = (function () {
       _textarea = document.querySelector('.markdown__textarea');
       _commandLine = document.querySelector('.markdown__command_line');
       _cover = document.querySelector('.markdown__cover');
+      _helpElem = document.querySelector('.markdown__help');
+    },
+    initEditor: function () {
       _createEvents();
       _setKeyListener();
-      _helpElem = document.querySelector('.markdown__help');
-
       // Check if a note is opened and if not open note 0
+      var viewToggle = (location.href.split('#')[1].indexOf('view') > -1 ? true : false)
       if(location.href.indexOf('#note=') < 0) {
-        _openNote(0);
+        _openNote(0, viewToggle);
       } else {
-        _loadActiveNote();
+        _loadActiveNote(viewToggle);
       }
     },
     triggerAction: function (letter) {
       _keyListener[letter]();
-    }
+    },
+    getTextarea: function () {
+      return _textarea;
+    },
+    getCover: function () {
+      return _cover;
+    },
   }
 });
 

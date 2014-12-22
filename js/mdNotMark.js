@@ -1,11 +1,11 @@
 var createMarkElement = (function () {
-  var _node,
+  var _textarea,
   _cover,
   _markSyntax = [],
   _viewMode = false;
 
   function _checkSyntax () {
-    var content = _node.value;
+    var content = _textarea.value;
     _markSyntax.forEach(function (val, index, array) {
       var match = true;
 
@@ -39,9 +39,9 @@ var createMarkElement = (function () {
   }
 
   return {
-    init: function (node) {
-      _node = node;
-      _cover = document.querySelector('.markdown__cover');
+    init: function (teaxtarea, cover) {
+      _textarea = teaxtarea, cover;
+      _cover = cover;
       _checkSyntax();
       _setListeners();
     },
