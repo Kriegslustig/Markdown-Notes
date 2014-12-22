@@ -14,7 +14,6 @@ createMdNotParamHandler = (function () {
       var thisParam = val.split('=');
       _params[thisParam[0]] = (thisParam[1] ? thisParam[1] : true );
     });
-    console.log(_params);
   }
 
   function _getParam (name) {

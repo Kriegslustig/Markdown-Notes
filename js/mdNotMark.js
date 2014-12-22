@@ -55,7 +55,6 @@ var createMarkElement = (function () {
     toggleViewMode: function () {
       _viewMode = !_viewMode;
       _checkSyntax();
-      console.log('viewmode ' + _viewMode);
       return _viewMode;
     }
   }

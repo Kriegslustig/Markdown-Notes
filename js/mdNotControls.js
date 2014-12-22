@@ -26,7 +26,6 @@ var createControls = (function () {
     },
     'N': function () {
       var newIndex = storage.newNote();
-      console.log(newIndex);
       _openNote(newIndex);
     },
     'H': function () {
@@ -38,7 +37,11 @@ var createControls = (function () {
     },
     'V': function () {
       _toggleViewMode();
-    }
+    },
+    'P': function () {
+      _commandLine.value = '';
+      _commandLine.focus();
+    },
   },
   _numberKeys = ['0','1','2','3','4','5','6','7','8','9'],
   _commands = {
@@ -93,7 +96,10 @@ var createControls = (function () {
           _commands[input[0]](input[1]);
           _textarea.focus();
         } else {
-          console.log('No such command');
+          createAlert({
+            message: 'No such command',
+            time: 2000
+          });
         }
       }
     }, false);
@@ -134,7 +140,10 @@ var createControls = (function () {
       _openNote(0);
       _textarea.dispatchEvent(_events.delete);
     } else {
-      console.log('You are curerently not on Note nr.' + index);
+      createAlert({
+        message: 'You are curerently not on Note nr.' + index,
+        time: 2000
+      });
     }
   }
 

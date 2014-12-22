@@ -203,3 +203,61 @@ h6 {
   padding: 0;
   margin: 0;
 }
+
+.alert {
+  position: absolute;
+  left: calc(50vw - 5rem);
+  top: calc(50vh - 2.5rem);
+  width: 10rem;
+  height: 5rem;
+  z-index: 20;
+  padding: .5rem;
+  background-color: rgba(0,0,0,.1);
+  animation: easeup .4s 0s linear 1;
+  transform: translateY(0);
+  opacity: 1;
+  -webkit-animation: easeup .4s 0s linear 1;
+}
+
+.alert__message {
+  float: left;
+  width: 100%;
+  text-align: center;
+  margin-bottom: .5rem;
+}
+
+.alert__button {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: .4rem;
+  margin: 0 auto;
+  display: block;
+  border: none;
+  background: rgba(0,0,0,.1);
+}
+
+.alert__button:focus {
+  outline: none;
+}
+
+@keyframes easeup {
+  0% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes easeup {
+  0% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
