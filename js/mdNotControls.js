@@ -74,7 +74,7 @@ var createControls = (function () {
           e.preventDefault();
           _keyListener[key]();
         } else if ( _numberKeys.indexOf(key) > -1 ) {
-          location.href = location.href.split('#')[0] + '#note=' + key;
+          mdNotParamHandler.setParam('note', key);
         }
       }
     }, false);
@@ -104,12 +104,13 @@ var createControls = (function () {
   }
 
   function _loadActiveNote (viewToggle) {
-    index = parseInt(location.href.split('#note=')[1]);
+    index = mdNotParamHandler.getParam('note');
     storage.loadItem(index);
     _currentNode = index;
     if(viewToggle) {
       _toggleViewMode();
     }
+    _textarea.dispatchEvent(_events.open);
   }
 
   function _toggleHelp () {
@@ -121,8 +122,7 @@ var createControls = (function () {
   }
 
   function _openNote(index, viewToggle) {
-    location.href = location.href.split('#')[0] + '#note=' + index;
-    _loadActiveNote();
+    mdNotParamHandler.setParam('note', index);
     if(viewToggle) {
       _toggleViewMode();
     }
@@ -139,20 +139,14 @@ var createControls = (function () {
   }
 
   function _toggleViewMode () {
-    var prefix = '&';
-    if(location.href.indexOf('#') < 0) {
-      prefix = '#';
-    }
     if(markElem.toggleViewMode()) {
       _textarea.className += ' ' + _areaInactiveToggleClass;
       _cover.className += ' ' + _coverViewToggleClass;
-      if(location.href.indexOf('view') < 0) {
-        location.href += '&view';
-      }
+      mdNotParamHandler.setParam('view', true);
     } else {
       _cover.className = _cover.className.replace(' ' + _coverViewToggleClass, '');
       _textarea.className = _textarea.className.replace(' ' + _areaInactiveToggleClass, '');
-      location.href = location.href.replace(prefix + 'view', '');
+      mdNotParamHandler.setParam('view', false);
     }
   }
 
@@ -168,8 +162,8 @@ var createControls = (function () {
       _createEvents();
       _setKeyListener();
       // Check if a note is opened and if not open note 0
-      var viewToggle = (location.href.split('#')[1].indexOf('view') > -1 ? true : false)
-      if(location.href.indexOf('#note=') < 0) {
+      var viewToggle = (mdNotParamHandler.getParam('view') ? true : false)
+      if(mdNotParamHandler.getParam('note') === false) {
         _openNote(0, viewToggle);
       } else {
         _loadActiveNote(viewToggle);

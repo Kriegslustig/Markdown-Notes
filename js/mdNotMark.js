@@ -31,7 +31,7 @@ var createMarkElement = (function () {
         _checkSyntax();
       }, 20);
     }, false);
-    window.addEventListener('hashchange', function () {
+    _textarea.addEventListener('open', function () {
       setTimeout( function () {
         _checkSyntax();
       }, 20);

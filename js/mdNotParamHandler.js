@@ -23,7 +23,7 @@ createMdNotParamHandler = (function () {
 
   function _setParam (name, value) {
     name = encodeURIComponent(name);
-    value = encodeURIComponent(value);
+    value = (typeof value === 'string' ? encodeURIComponent(value) : value);
     _params[name] = value;
     _updateURL();
   }
@@ -32,8 +32,8 @@ createMdNotParamHandler = (function () {
     var paramString = '';
     var prefix = '#';
     for(var prop in _params) {
-      if(param.hasOwnProperty(prop)) {
-        paramString += prop + (typeof _params[prop] === 'bool' ? '' : '=' + _params[prop]) + prefix;
+      if(_params.hasOwnProperty(prop) && _params[prop] !== false) {
+        paramString += prop + (_params[prop] === true ? '' : '=' + _params[prop]) + prefix;
         prefix = '&';
       }
     }
