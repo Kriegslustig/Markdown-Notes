@@ -1,15 +1,20 @@
 var createMarkElement = (function () {
   var _node,
   _cover,
-  _markSyntax = [];
+  _markSyntax = [],
+  _viewMode = false;
 
   function _checkSyntax () {
     var content = _node.value;
     _markSyntax.forEach(function (val, index, array) {
       var match = true;
 
-      while ( match ){
-        newContent = content.replace(val.regex, val.tag);
+      while (match){
+        if(_viewMode && val.view) {
+          newContent = content.replace(val.regex, val.view);
+        } else {
+          newContent = content.replace(val.regex, val.tag);
+        }
         if(newContent === content) {
           break;
         } else {
@@ -47,5 +52,11 @@ var createMarkElement = (function () {
         _markSyntax.push(pushThis);
       }
     },
+    toggleViewMode: function () {
+      _viewMode = !_viewMode;
+      _checkSyntax();
+      console.log('viewmode ' + _viewMode);
+      return _viewMode;
+    }
   }
 });

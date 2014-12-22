@@ -9,6 +9,7 @@ window.addEventListener('load', function () {
 var createControls = (function () {
   var _events = {},
   _textarea,
+  _cover,
   _controlKey = false,
   _keyListener = {
     'S': function () {
@@ -33,6 +34,9 @@ var createControls = (function () {
     'D': function () {
       _commandLine.value = 'delete: ';
       _commandLine.focus();
+    },
+    'V': function () {
+      _toggleViewMode();
     }
   },
   _numberKeys = ['0','1','2','3','4','5','6','7','8','9'],
@@ -48,7 +52,9 @@ var createControls = (function () {
   },
   _helpToggleClass = 'markdown__help--open',
   _helpElem,
-  _currentNode = 0;
+  _currentNode = 0.
+  _areaInactiveToggleClass = 'markdown__textarea--disabled',
+  _coverViewToggleClass = 'markdown__cover--view';
 
   function _createEvents () {
     _events.save = new CustomEvent('save');
@@ -57,9 +63,9 @@ var createControls = (function () {
   }
 
   function _setKeyListener () {
-    _textarea.addEventListener('keydown', function (e) {
+    document.addEventListener('keydown', function (e) {
       var charCode = e.which || e.keyCode;
-      var key = String.fromCharCode(charCode);
+      var key = String.fromCharCode(charCode).toUpperCase();
       if((e.key || e.keyIdentifier) === 'Control') {
         _controlKey = true;
       } else if(_controlKey) {
@@ -72,7 +78,7 @@ var createControls = (function () {
       }
     }, false);
 
-    _textarea.addEventListener('keyup', function (e) {
+    document.addEventListener('keyup', function (e) {
       if((e.key || e.keyIdentifier) === 'Control') {
         _controlKey = false;
       }
@@ -125,10 +131,22 @@ var createControls = (function () {
     }
   }
 
+  function _toggleViewMode () {
+    if(markElem.toggleViewMode()) {
+      _textarea.className += ' ' + _areaInactiveToggleClass;
+      _cover.className += ' ' + _coverViewToggleClass;
+    } else {
+      _cover.className = _cover.className.replace(' ' + _coverViewToggleClass, '');
+      _textarea.className = _textarea.className.replace(' ' + _areaInactiveToggleClass, '');
+    }
+  }
+
+
   return {
     init: function (callback) {
       _textarea = document.querySelector('.markdown__textarea');
       _commandLine = document.querySelector('.markdown__command_line');
+      _cover = document.querySelector('.markdown__cover');
       _createEvents();
       _setKeyListener();
       _helpElem = document.querySelector('.markdown__help');

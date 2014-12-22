@@ -42,14 +42,20 @@ markElem.addSyntax([
     regex: /(^|\ )(\!\[[^\n$]*\]\(([^\n$\ \)]*)\))/gm,
     tag: function ($0, $1, $2, $3) {
       return $1 + '<i>' + $2 + '</i>';
+    },
+    view: function ($0, $1, $2, $3) {
+      return $1 + '<img alt="' + $2 + '" src="' + $3 + '">';
     }
   },
   {
     description: 'Links',
-    regex: /(^|\ )(\[[^\n$]*\]\(([^\n$\ \)]*)\))/gm,
-    tag: function ($0, $1, $2, $3) {
-      return $1 + '<a href="' + $3 + '">' + $2 + '</a>';
-    }
+    regex: /(^|\ )(\[([^\n$]*)\]\(([^\n$\ \)]*)\))/gm,
+    tag: function ($0, $1, $2, $3, $4) {
+      return $1 + '<a href="' + $4 + '">' + $2 + '</a>';
+    },
+    view: function ($0, $1, $2, $3, $4) {
+      return $1 + '<a target="_blank" href="' + $4 + '">' + $3 + '</a>';
+    },
   },
   {
     description: 'Spaces after linebreaks',
