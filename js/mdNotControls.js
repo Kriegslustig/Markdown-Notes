@@ -42,6 +42,14 @@ var createControls = (function () {
       _commandLine.value = '';
       _commandLine.focus();
     },
+    'E': function () {
+      _commandLine.value = 'encrypt: ';
+      _commandLine.focus();
+    },
+    'C': function () {
+      _commandLine.value = 'decrypt: ';
+      _commandLine.focus();
+    },
   },
   _numberKeys = ['0','1','2','3','4','5','6','7','8','9'],
   _commands = {
@@ -52,7 +60,14 @@ var createControls = (function () {
     },
     'delete': function (index) {
       _delete(parseInt(index));
-    }
+    },
+    'encrypt': function (password) {
+      _textarea.value = sjcl.encrypt(password, JSON.stringify(_textarea.value) );
+      _textarea.dispatchEvent(_events.save);
+    },
+    'decrypt': function (password) {
+      _textarea.value = sjcl.decrypt(password, _textarea.value);
+    },
   },
   _helpToggleClass = 'markdown__help--open',
   _helpElem,
@@ -77,6 +92,7 @@ var createControls = (function () {
           e.preventDefault();
           _keyListener[key]();
         } else if ( _numberKeys.indexOf(key) > -1 ) {
+          console.log(key);
           mdNotParamHandler.setParam('note', key);
         }
       }
