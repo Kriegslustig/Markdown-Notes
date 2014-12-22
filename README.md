@@ -7,7 +7,6 @@ A Markdown notes web-app which works with localStorage.
 This is a simple note taking app. I wouldn't use it if I hadn't created it.
 
 ## To Do
-* Popups
 * Encryption
 * Configuration file
 * Remote Database
