@@ -32,10 +32,11 @@ createMdNotParamHandler = (function () {
     var prefix = '#';
     for(var prop in _params) {
       if(_params.hasOwnProperty(prop) && _params[prop] !== false) {
-        paramString += prop + (_params[prop] === true ? '' : '=' + _params[prop]) + prefix;
+        paramString += prefix + prop + (_params[prop] === true ? '' : '=' + _params[prop]);
         prefix = '&';
       }
     }
+    location.href = location.href.split('#')[0] + paramString;
   }
 
   return {
