@@ -7,8 +7,6 @@ A Markdown notes web-app which works with localStorage.
 This is a simple note taking app. I wouldn't use it if I hadn't created it.
 
 ## To Do
-* Tree as a #-parameter
-* Encrypt all notes per default and automatically
 * GUI with buttons
 * Configuration file
 * Remote Database
