@@ -221,6 +221,9 @@ var createControls = (function () {
         _loadActiveNote(viewToggle);
       }
       _initializeControlNav()
+      _textarea.addEventListener('scroll', function () {
+        _cover.scrollTop = _textarea.scrollTop;
+      }, false);
     },
     triggerAction: function (letter) {
       _keyListener[letter]();
