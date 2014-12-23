@@ -22,7 +22,6 @@ var createMdNotCrypto = (function () {
     checkReadyness;
 
     checkReadyness = setInterval(function () {
-      console.log(length);
       if(sjcl.random.isReady(10)) {
         while(randomBase64String.length < length) {
           randomInt = sjcl.random.randomWords(1, 10)[0];

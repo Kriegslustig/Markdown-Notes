@@ -72,7 +72,6 @@ var createStorage = (function () {
   }
 
   function _saveToStorage (index, note) {
-    console.log('_saveToStorage');
     mdNotCrypto.encrypt(false, note.content, function (content) {
       note.content = content;
       localStorage.setItem(_storagePrefix + index, JSON.stringify(note));
