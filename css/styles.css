@@ -209,7 +209,7 @@ h6 {
   left: calc(50vw - 5rem);
   top: calc(50vh - 2.5rem);
   width: 10rem;
-  height: 5rem;
+  min-height: 5rem;
   z-index: 20;
   padding: .5rem;
   background-color: rgba(0,0,0,.1);

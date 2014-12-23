@@ -18,7 +18,9 @@ var createAlert = (function (parameters) {
     _alertTemplate = document.createElement('aside');
     _alertTemplate.className = 'markdown__alert alert';
     _alertTemplate.appendChild(_message);
-    _alertTemplate.appendChild(_button);
+    if(!parameters.hide_button){
+      _alertTemplate.appendChild(_button);
+    }
 
     _container.appendChild(_alertTemplate);
 

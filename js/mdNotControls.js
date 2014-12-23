@@ -62,11 +62,15 @@ var createControls = (function () {
       _delete(parseInt(index));
     },
     'encrypt': function (password) {
-      _textarea.value = sjcl.encrypt(password, JSON.stringify(_textarea.value) );
-      _textarea.dispatchEvent(_events.save);
+      mdNotCrypto.encrypt(password, _textarea.value, function (returnStr) {
+        _textarea.value = returnStr;
+        _textarea.dispatchEvent(_events.save);
+      });
     },
     'decrypt': function (password) {
-      _textarea.value = sjcl.decrypt(password, _textarea.value);
+      mdNotCrypto.decrypt(password, _textarea.value, function (returnStr) {
+        _textarea.value = returnStr;
+      });
     },
   },
   _helpToggleClass = 'markdown__help--open',
@@ -92,7 +96,6 @@ var createControls = (function () {
           e.preventDefault();
           _keyListener[key]();
         } else if ( _numberKeys.indexOf(key) > -1 ) {
-          console.log(key);
           mdNotParamHandler.setParam('note', key);
         }
       }

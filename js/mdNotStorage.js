@@ -7,14 +7,14 @@ var createStorage = (function () {
     _noteIndex = [];
     var found = true,
     i = 0;
-    while(found) {
+
+    while(key = localStorage.key(i)) {
       var note = false;
-      if(note = localStorage.getItem(_storagePrefix + i)) {
-        i++;
+      if(key.indexOf(_storagePrefix) > -1) {
+        note = localStorage.getItem(key);
         _noteIndex.push(JSON.parse(note));
-      } else {
-        break;
       }
+      i++;
     }
   }
 
