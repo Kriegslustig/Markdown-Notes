@@ -124,6 +124,9 @@ var createControls = (function () {
             time: 2000
           });
         }
+      } else if((e.which || e.keyCode) === 27) {
+        _commandLine.value = '';
+        _textarea.focus();
       }
     }, false);
 
