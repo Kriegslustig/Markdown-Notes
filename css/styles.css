@@ -9,22 +9,28 @@ body {
   box-sizing: border-box;
 }
 
+/* -------------------------------------------
+ * ---- markdown
+ * -----------------------------------------*/
+
 .markdown {
   overflow: hidden;
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 3.5rem);
   font-family: courier;
   font-size: 1rem;
   line-height: 1.6rem;
+  background-color: rgb(235,235,235);
 }
 
 .markdown__cover {
-  z-index: -1;
+  z-index: 1;
+  overflow: auto;
 }
 
 .markdown__cover--view {
-  z-index: 1;
+  z-index: 3;
 }
 
 .markdown__cover,
@@ -36,7 +42,8 @@ body {
 .markdown__cover,
 .markdown__textarea {
   position: absolute;
-  width: 100vw;
+  width: 100%;
+  height: 100%;
   padding: 0;
   margin: 0;
   border: none;
@@ -53,12 +60,10 @@ body {
     padding-left: 2rem;
     padding-right: 2rem;
   }
-  .markdown__cover {
-    box-shadow: 0 0 10px 10px rgba(0,0,0,.05);
-  }
 }
 
 .markdown__textarea {
+  z-index: 2;
   opacity: .3;
   outline: none;
   resize: none;
@@ -70,15 +75,6 @@ body {
 
 code {
   color: tomato;
-}
-
-.code_block {
-  float: left;
-  width: 100%;
-  background-color: #eee;
-  margin-top: -.2rem;
-  padding: .2rem 0;
-  margin-bottom: -.2rem;
 }
 
 .markdown__cover,
@@ -96,19 +92,35 @@ code,
   font-size: inherit;
   line-height: inherit;
   left: 0;
-  bottom: 1rem;
-  height: 2rem;
+  bottom: 0;
+  height: 3rem;
   width: 100%;
-  z-index: 2;
+  z-index: 4;
   padding: 0 1rem;
   border: none;
   background-color: #f9f9f9;
-  box-shadow: 0 0 12px 2px rgba(0,0,0,.1);
 }
 
 .markdown__command_line:focus {
   outline: none;
 }
+
+/* -------------------------------------------
+ * ---- code_block
+ * -----------------------------------------*/
+
+.code_block {
+  float: left;
+  width: 100%;
+  background-color: #eee;
+  margin-top: -.2rem;
+  padding: .2rem 0;
+  margin-bottom: -.2rem;
+}
+
+/* -------------------------------------------
+ * ---- mdnot_tree
+ * -----------------------------------------*/
 
 .mdnot_tree {
   position: absolute;
@@ -116,8 +128,7 @@ code,
   top: 0;
   width: 20rem;
   z-index: 1;
-  background-color: #f9f9f9;
-  box-shadow: 0 0 12px 2px rgba(0,0,0,.1);
+  background-color: rgb(225,225,225);
   opacity: 0;
   transition: .4s;
   transition-property: opacity opacity;
@@ -219,6 +230,10 @@ h6 {
   -webkit-animation: easeup .4s 0s linear 1;
 }
 
+/* -------------------------------------------
+ * ---- alert
+ * -----------------------------------------*/
+
 .alert__message {
   float: left;
   width: 100%;
@@ -260,4 +275,37 @@ h6 {
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+
+/* -------------------------------------------
+ * ---- control
+ * -----------------------------------------*/
+.control {
+  height: 3.5rem;
+  padding: 1rem;
+  background: rgba(0,0,0,.1);
+  overflow: hidden;
+}
+
+.control__item {
+  padding: 0.3rem 0.6rem;
+  float: left;
+}
+
+.control__item[data-state="unsaved"] {
+  background: #fff;
+  padding: 0.3rem 0.6rem;
+}
+
+.control__item[data-state="unsaved"] .control__link {
+  text-decoration: none;
+}
+
+.control__item:last-child {
+  float: right;
+}
+
+.control__link {
+  color: #000;
 }
