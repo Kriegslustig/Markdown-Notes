@@ -58,7 +58,6 @@ var createControls = (function () {
   _numberKeys = ['0','1','2','3','4','5','6','7','8','9'],
   _commands = {
     'title': function (title) {
-      // Renames the note and saves it
       _textarea.attributes.title = title;
       _textarea.dispatchEvent(_events.save);
     },
@@ -81,7 +80,10 @@ var createControls = (function () {
   _helpElem,
   _currentNode = 0.
   _areaInactiveToggleClass = 'markdown__textarea--disabled',
-  _coverViewToggleClass = 'markdown__cover--view';
+  _coverViewToggleClass = 'markdown__cover--view',
+  _controlNavElems = {
+    'S': '',
+  };
 
   function _createEvents () {
     _events.save = new CustomEvent('save');
@@ -185,6 +187,20 @@ var createControls = (function () {
     }
   }
 
+  function _initializeControlNav () {
+    for(var prop in _controlNavElems) {
+      if(_controlNavElems.hasOwnProperty(prop)) {
+        _controlNavElems[prop] = _controlNav.querySelector('.control__item--'+prop);
+      }
+    }
+    _textarea.addEventListener('change', function () {
+      _controlNavElems['S'].setAttribute('data-state', 'unsaved');
+    }, false);
+    _textarea.addEventListener('save', function () {
+      _controlNavElems['S'].setAttribute('data-state', 'saved');
+    }, false);
+  }
+
 
   return {
     init: function (callback) {
@@ -192,6 +208,7 @@ var createControls = (function () {
       _commandLine = document.querySelector('.markdown__command_line');
       _cover = document.querySelector('.markdown__cover');
       _helpElem = document.querySelector('.markdown__help');
+      _controlNav = document.querySelector('.control');
     },
     initEditor: function () {
       _createEvents();
@@ -203,6 +220,7 @@ var createControls = (function () {
       } else {
         _loadActiveNote(viewToggle);
       }
+      _initializeControlNav()
     },
     triggerAction: function (letter) {
       _keyListener[letter]();

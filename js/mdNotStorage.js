@@ -1,7 +1,8 @@
 var createStorage = (function () {
   var _noteIndex = [],
   _storagePrefix = 'note_',
-  _textarea;
+  _textarea,
+  _events = {};
 
   function _loadNotes () {
     _noteIndex = [];
@@ -42,6 +43,16 @@ var createStorage = (function () {
     _textarea.addEventListener('save', function () {
       _save(_textarea.value, _textarea.attributes.title, _textarea.id);
     }, false);
+
+    _events.change = new CustomEvent('change');
+    _events.unchanged = new CustomEvent('unchanged');
+    document.addEventListener('keyup', function () {
+      if(!_checkForUnsavedChanges()){
+        _textarea.dispatchEvent(_events.change);
+      } else {
+        _textarea.dispatchEvent(_events.unchanged);
+      }
+    }, false);
   }
 
   function _loadItem (index) {
@@ -73,10 +84,23 @@ var createStorage = (function () {
 
   function _saveToStorage (index, note) {
     mdNotCrypto.encrypt(false, note.content, function (content) {
-      note.content = content;
-      localStorage.setItem(_storagePrefix + index, JSON.stringify(note));
+      localStorage.setItem(_storagePrefix + index, JSON.stringify({
+        index: note.index,
+        title: note.title,
+        content: content,
+      }));
     });
   }
+
+  function _checkForUnsavedChanges () {
+    var index = _textarea.id;
+    if(_noteIndex[index].index !== index ||
+      _noteIndex[index].title !== _textarea.attributes.title ||
+      _noteIndex[index].content !== _textarea.value) {
+      return false;
+    }
+    return true;
+  };
 
   return {
     init: function () {
@@ -98,6 +122,6 @@ var createStorage = (function () {
     deleteNote: function (index) {
       _removeItem(index)
       _updateIndex();
-    }
+    },
   }
 });
