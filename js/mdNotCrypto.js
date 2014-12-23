@@ -37,16 +37,28 @@ var createMdNotCrypto = (function () {
 
   return {
     encrypt: function (password, string, callback) {
-      password = _password(password, function (password) {
+      _password(password, function (password) {
         callback( sjcl.encrypt(password, string) );
       });
     },
 
     decrypt: function (password, string, callback) {
-      password = _password(password, function (password) {
+      _password(password, function (password) {
         callback( sjcl.decrypt(password, string) );
       });
     },
+    isEncrypted: function (string) {
+      try {
+        var jsonString = JSON.parse(string);
+        if(jsonString && jsonString['cipher'] && jsonString['cipher'] === 'aes') {
+          return true;
+        }
+        return false;
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }
   }
 });
 

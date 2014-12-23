@@ -11,8 +11,15 @@ var createStorage = (function () {
     while(key = localStorage.key(i)) {
       var note = false;
       if(key.indexOf(_storagePrefix) > -1) {
-        note = localStorage.getItem(key);
-        _noteIndex.push(JSON.parse(note));
+        note = JSON.parse(localStorage.getItem(key));
+        if(mdNotCrypto.isEncrypted(note.content)) {
+          mdNotCrypto.decrypt(false, note.content, function (content) {
+            note.content = content;
+            _noteIndex.push(note);
+          });
+        } else {
+          _noteIndex.push(note);
+        }
       }
       i++;
     }
@@ -27,8 +34,8 @@ var createStorage = (function () {
       content: content,
     };
     _noteIndex[index] = note;
-    localStorage.setItem(_storagePrefix + index, JSON.stringify(note));
     _loadItem(index);
+    _saveToStorage(index, note);
   }
 
   function _setEventListeners () {
@@ -54,7 +61,7 @@ var createStorage = (function () {
       var currentIndex = _noteIndex[i].index;
       localStorage.removeItem(_storagePrefix + currentIndex);
       _noteIndex[i].index = i;
-      localStorage.setItem(_storagePrefix + i, JSON.stringify(_noteIndex[i]));
+      _saveToStorage(i, _noteIndex[i])
     };
     _loadNotes();
   }
@@ -62,7 +69,15 @@ var createStorage = (function () {
   function _removeItem (index) {
     localStorage.removeItem(_storagePrefix + index);
     _noteIndex.splice(index, 1);
-}
+  }
+
+  function _saveToStorage (index, note) {
+    console.log('_saveToStorage');
+    mdNotCrypto.encrypt(false, note.content, function (content) {
+      note.content = content;
+      localStorage.setItem(_storagePrefix + index, JSON.stringify(note));
+    });
+  }
 
   return {
     init: function () {
