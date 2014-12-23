@@ -22,7 +22,11 @@ var createControls = (function () {
       _commandLine.focus();
     },
     'T': function () {
-      mdNotTree.toggleTree();
+      if(mdNotParamHandler.getParam('tree')) {
+        mdNotParamHandler.setParam('tree', false);
+      } else {
+        mdNotParamHandler.setParam('tree', true);
+      }
     },
     'N': function () {
       var newIndex = storage.newNote();

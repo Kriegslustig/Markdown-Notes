@@ -25,13 +25,16 @@ var createTree = (function () {
     _textarea.addEventListener('delete', function () {
       _updateTree();
     }, false);
+    window.addEventListener('hashchange', function () {
+      _toggleTree();
+    }, false);
   }
 
   function _toggleTree () {
-    if(_treeElem.className.indexOf(' ' + _treeToggleClass) > -1) {
-      _treeElem.className = _treeElem.className.replace(' ' + _treeToggleClass, '');
-    } else {
+    if(mdNotParamHandler.getParam('tree')) {
       _treeElem.className += ' ' + _treeToggleClass;
+    } else {
+      _treeElem.className = _treeElem.className.replace(' ' + _treeToggleClass, '');
     }
   }
 
@@ -42,6 +45,7 @@ var createTree = (function () {
       _textarea = document.querySelector('.markdown__textarea');
       _setEventListeners();
       _updateTree();
+      _toggleTree();
     },
     toggleTree: function () {
       _toggleTree();
