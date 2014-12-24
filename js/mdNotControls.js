@@ -83,12 +83,15 @@ var createControls = (function () {
   _coverViewToggleClass = 'markdown__cover--view',
   _controlNavElems = {
     'S': '',
+    'V': '',
   };
 
   function _createEvents () {
     _events.save = new CustomEvent('save');
     _events.delete = new CustomEvent('delete');
     _events.open = new CustomEvent('open');
+    _events.viewmode = new CustomEvent('viewmode');
+    _events.editmode = new CustomEvent('editmode');
   }
 
   function _setKeyListener () {
@@ -177,10 +180,12 @@ var createControls = (function () {
 
   function _toggleViewMode () {
     if(markElem.toggleViewMode()) {
+      _textarea.dispatchEvent(_events.viewmode);
       _textarea.className += ' ' + _areaInactiveToggleClass;
       _cover.className += ' ' + _coverViewToggleClass;
       mdNotParamHandler.setParam('view', true);
     } else {
+      _textarea.dispatchEvent(_events.editmode);
       _cover.className = _cover.className.replace(' ' + _coverViewToggleClass, '');
       _textarea.className = _textarea.className.replace(' ' + _areaInactiveToggleClass, '');
       mdNotParamHandler.setParam('view', false);
@@ -198,6 +203,12 @@ var createControls = (function () {
     }, false);
     _textarea.addEventListener('save', function () {
       _controlNavElems['S'].setAttribute('data-state', 'saved');
+    }, false);
+    _textarea.addEventListener('viewmode', function () {
+      _controlNavElems['V'].setAttribute('data-state', 'viewmode');
+    }, false);
+    _textarea.addEventListener('editmode', function () {
+      _controlNavElems['V'].setAttribute('data-state', 'editmode');
     }, false);
   }
 
