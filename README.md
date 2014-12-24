@@ -8,6 +8,7 @@ This is a simple note taking app. I wouldn't use it if I hadn't created it.
 
 ## To Do
 * Configuration screen
+* Refactoring the storage thing to make it replacable
 * Folders and sub folders
     - Drag'n drop thing
 * Remote Database
