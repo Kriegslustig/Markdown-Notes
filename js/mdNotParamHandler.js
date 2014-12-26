@@ -24,7 +24,7 @@ createMdNotParamHandler = (function () {
     name = encodeURIComponent(name);
     value = (typeof value === 'string' ? encodeURIComponent(value) : value);
     _params[name] = value;
-    _updateURL();
+    return _updateURL();
   }
 
   function _updateURL () {
@@ -36,12 +36,12 @@ createMdNotParamHandler = (function () {
         prefix = '&';
       }
     }
-    location.href = location.href.split('#')[0] + paramString;
+    return location.href.split('#')[0] + paramString;
   }
 
   return {
     init: function () {
-      _parseUrl();
+      return _parseUrl();
     },
     getParam: function (name) {
       return _getParam(name);

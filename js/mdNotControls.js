@@ -23,9 +23,9 @@ var createControls = (function () {
     },
     'T': function () {
       if(mdNotParamHandler.getParam('tree')) {
-        mdNotParamHandler.setParam('tree', false);
+        location.href = mdNotParamHandler.setParam('tree', false);
       } else {
-        mdNotParamHandler.setParam('tree', true);
+        location.href = mdNotParamHandler.setParam('tree', true);
       }
     },
     'N': function () {
@@ -105,7 +105,7 @@ var createControls = (function () {
           e.preventDefault();
           _keyListener[key]();
         } else if ( _numberKeys.indexOf(key) > -1 ) {
-          mdNotParamHandler.setParam('note', key);
+          location.href = mdNotParamHandler.setParam('note', key);
         }
       }
     }, false);
@@ -159,7 +159,7 @@ var createControls = (function () {
   }
 
   function _openNote(index, viewToggle) {
-    mdNotParamHandler.setParam('note', index);
+    location.href = mdNotParamHandler.setParam('note', index);
     if(viewToggle) {
       _toggleViewMode();
     }
@@ -183,12 +183,12 @@ var createControls = (function () {
       _textarea.dispatchEvent(_events.viewmode);
       _textarea.className += ' ' + _areaInactiveToggleClass;
       _cover.className += ' ' + _coverViewToggleClass;
-      mdNotParamHandler.setParam('view', true);
+      location.href = mdNotParamHandler.setParam('view', true);
     } else {
       _textarea.dispatchEvent(_events.editmode);
       _cover.className = _cover.className.replace(' ' + _coverViewToggleClass, '');
       _textarea.className = _textarea.className.replace(' ' + _areaInactiveToggleClass, '');
-      mdNotParamHandler.setParam('view', false);
+      location.href = mdNotParamHandler.setParam('view', false);
     }
   }
 
