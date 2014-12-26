@@ -16,6 +16,7 @@
   QUnit.test("mdNotParamHandler", function (assert) {
     mdNotParamHandler = createMdNotParamHandler();
     assert.ok(mdNotParamHandler.init('xyz/#/?yoo')['yoo'] === true, 'init should call parseUrl, which should return an object of params');
+    assert.equal(mdNotParamHandler.setPlace('note/new', 'xyz/#/note/new?yoo', 'setPlace should set a string after #/ and before ?'));
   });
   </script>
   <div id="qunit"></div>
