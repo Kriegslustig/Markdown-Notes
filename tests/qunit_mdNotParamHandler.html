@@ -15,8 +15,11 @@
   }
   QUnit.test("mdNotParamHandler", function (assert) {
     mdNotParamHandler = createMdNotParamHandler();
-    assert.ok(mdNotParamHandler.init('xyz/#/?yoo')['yoo'] === true, 'init should call parseUrl, which should return an object of params');
-    assert.equal(mdNotParamHandler.setPlace('note/new'), 'xyz/#/note/new?yoo', 'setPlace should set a string after #/ and before ?');
+    assert.ok(mdNotParamHandler.init('xyz/#/?yoo&name=bob')['yoo'] === true, 'init should call parseUrl, which should return an object of params');
+    assert.equal(mdNotParamHandler.getParam('name'), 'bob', 'getParam should return the value of a parameter')
+    assert.equal(mdNotParamHandler.setParam('name', 'alice'), 'xyz/#/?yoo&name=alice', 'setParam should set the value of a parameter')
+    assert.equal(mdNotParamHandler.getParam('name'), 'alice', 'this should now be alice')
+    assert.equal(mdNotParamHandler.setPlace('note/new'), 'xyz/#/note/new?yoo&name=alice', 'setPlace should set a string after #/ and before ?');
     assert.equal(mdNotParamHandler.getPlace(), 'note/new', 'setPlace should set a string after #/ and before ?');
   });
   </script>
