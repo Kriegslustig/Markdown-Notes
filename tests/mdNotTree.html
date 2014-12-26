@@ -49,7 +49,6 @@
       function (assert) {
         initTree(
           function (tree, treeElem, treeElemList) {
-            console.log(treeElem);
             assert.ok(treeElem.querySelector('.mdnot_tree__list>li>a>p'));
           },
         basicTestTree());
@@ -96,7 +95,6 @@
           notes: [testNote],
           parentDirectory: 0,
         };
-        console.log(complexTestTree);
         initTree(
           function (tree, treeElem) {
             assert.ok(treeElem.className.indexOf('open'));
