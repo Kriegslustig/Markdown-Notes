@@ -5,18 +5,44 @@ var createTree = (function () {
   _textarea,
   _treeToggleClass ='mdnot_tree--open',
   _leafTemplate = document.createElement('li'),
-  _state = false;
+  _state = false,
+  _directoryLeafTemplate,
+  _directoryLeafIdPrefix = 'mdnot_tree__leaf--directory--';
 
   _leafTemplate.className = 'mdnot_tree__leaf';
 
-  function _updateTree () {
-    _notesIndex = storage.getIndex();
-    _listElem.innerHTML = '';
-    _notesIndex.forEach(function (val, index, array) {
+  _directoryLeafTemplate = _leafTemplate.cloneNode();
+  _directoryLeafTemplate.className += 'mdnot_tree__leaf--directory';
+  _directoryLeafTemplate.appendChild(document.createElement('ul'));
+
+  function _createLeafs (notesArr, elem) {
+    notesArr.forEach(function (val, index, array) {
       var _thisLeaf = _leafTemplate.cloneNode();
       _thisLeaf.innerHTML = '<a class="mdnot_tree__link" href="#note='+ val.index +'"><p>' + val.index + ': ' + val.title + '</p></a>';
-      _listElem.appendChild(_thisLeaf);
+      elem.appendChild(_thisLeaf);
     });
+  }
+
+  function _createTree () {
+    _listElem.innerHTML = '';
+    _notesTree = storage.getIndex();
+    _listElem.id = _directoryLeafIdPrefix + 0;
+    for (var i = 0; _notesTree.length > 0; i++) {
+      if(_notesTree[i]) {
+        var parentDir = document.getElementById(_directoryLeafIdPrefix + _notesTree[i].parentDirectory)
+        if(parentDir) {
+          var thisListElem = _directoryLeafTemplate.cloneNode(true);
+          _directoryLeafTemplate.id = _directoryLeafIdPrefix + i;
+          console.log(thisListElem);
+          _createLeafs(_notesTree[i].notes, thisListElem.children[0]);
+          parentDir.appendChild(thisListElem);
+          _notesTree.splice(i, 1);
+       }
+      }
+      if(i > _notesTree.length - 2) {
+        i = 0;
+      }
+    };
   }
 
   function _setEventListeners () {
@@ -48,7 +74,7 @@ var createTree = (function () {
       _listElem = document.querySelector('.mdnot_tree__list');
       _textarea = document.querySelector('.markdown__textarea');
       _setEventListeners();
-      _updateTree();
+      _createTree();
       _toggleTree();
     },
     toggleTree: function () {
