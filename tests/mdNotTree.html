@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Markdown Notes - Tests</title>
+  <link rel="stylesheet" type="text/css" href="../lib/qunit-1.16.0.css">
+  <script type="text/javascript" src="../lib/qunit-1.16.0.js"></script>
+  <script type="text/javascript" src="../js/mdNotTree.js"></script>
+</head>
+<body>
+  <script>
+
+    function initTree (callback, treeArr, open) {
+      var treeElem = document.querySelector('.mdnot_tree');
+      var treeElemList = treeElem.children[0];
+      var thisOpen = typeof open === 'bool' ? open : false;
+      var mdNotTree = createTree();
+      window.storage = {
+        getIndex: function () {
+          return treeArr;
+        }
+      }
+      window.mdNotParamHandler = {
+        getParam: function () {
+          return thisOpen;
+        }
+      }
+      mdNotTree.init();
+      callback(mdNotTree, treeElem, treeElemList);
+    }
+
+    var testNote = {
+      index: 0,
+      title: 'Test note 0',
+      content: 'Test note 0'
+    }
+    var basicTestTree = function () {
+      return [{
+        notes: [
+          testNote,
+          testNote,
+        ],
+        parentDirectory: 'r',
+        title: 'A directory'
+      }];
+    }
+
+    QUnit.test("init should create a structure that is something like .mdnot_tree>.mdnot_tree__list>(a>p, ul)",
+      function (assert) {
+        initTree(
+          function (tree, treeElem, treeElemList) {
+            console.log(treeElem);
+            assert.ok(treeElem.querySelector('.mdnot_tree__list>li>a>p'));
+          },
+        basicTestTree());
+      }
+    );
+
+    QUnit.test("init should create a list of notes in .mdnot_tree__list",
+      function (assert) {
+        initTree(
+          function (tree, treeElem, treeElemList) {
+            assert.equal(treeElemList.children[0].querySelector('a p').innerHTML, '0: Test note 0', 'Notes aren\'t beeing displayed correctly');
+          },
+        basicTestTree());
+      }
+    );
+
+    QUnit.test("toggleTree should add a class containing open to the treeElem",
+      function (assert) {
+        initTree(
+          function (tree, treeElem) {
+            tree.toggleTree(true);
+            assert.ok(treeElem.className.indexOf('open') > -1);
+            tree.toggleTree(false);
+            assert.ok(treeElem.className.indexOf('open') === -1);
+          },
+        basicTestTree(), false);
+      }
+    );
+
+    QUnit.test("init should trigger toggleTree when URL parameter is set",
+      function (assert) {
+        initTree(
+          function (tree, treeElem) {
+            assert.ok(treeElem.className.indexOf('open'));
+          },
+        basicTestTree(), true);
+      }
+    );
+
+    QUnit.test("createTree should be able to create subdirectories",
+      function (assert) {
+        var complexTestTree = basicTestTree();
+        complexTestTree[3] = {
+          notes: [testNote],
+          parentDirectory: 0,
+        };
+        console.log(complexTestTree);
+        initTree(
+          function (tree, treeElem) {
+            assert.ok(treeElem.className.indexOf('open'));
+          },
+        complexTestTree);
+      }
+    );
+  </script>
+  <p>mdNotTree isn't very testable, because of closures</p>
+  <div id="qunit"></div>
+  <div id="qunit-fixture">
+    <textarea class="markdown__textarea"></textarea>
+    <nav class="markdown__tree mdnot_tree">
+      <ul class="mdnot_tree__list"></ul>
+    </nav>
+  </div>
+</body>
+<script>var reloadr = {reloadSource: '../lib/reloadr/source.php?watch_dir=' + encodeURIComponent('../../.'), notifications: false};</script>
+<script type="text/javascript" src="../lib/reloadr/reloadr.js"></script>
+</html>

@@ -7,13 +7,18 @@ var createTree = (function () {
   _leafTemplate = document.createElement('li'),
   _state = false,
   _directoryLeafTemplate,
-  _directoryLeafIdPrefix = 'mdnot_tree__leaf--directory--';
+  _directoryLeafIdPrefix = 'mdnot_tree__leaf--directory--',
+  _dirLinkTemplate;
 
   _leafTemplate.className = 'mdnot_tree__leaf';
 
   _directoryLeafTemplate = _leafTemplate.cloneNode();
   _directoryLeafTemplate.className += 'mdnot_tree__leaf--directory';
   _directoryLeafTemplate.appendChild(document.createElement('ul'));
+
+  _dirLinkTemplate = document.createElement('a');
+  _dirLinkTemplate.className = 'mdnot_tree__link';
+  _directoryLeafTemplate.appendChild(_dirLinkTemplate);
 
   function _createLeafs (notesArr, elem) {
     notesArr.forEach(function (val, index, array) {
@@ -26,14 +31,14 @@ var createTree = (function () {
   function _createTree () {
     _listElem.innerHTML = '';
     _notesTree = storage.getIndex();
-    _listElem.id = _directoryLeafIdPrefix + 0;
+    _listElem.id = _directoryLeafIdPrefix + 'r';
     for (var i = 0; _notesTree.length > 0; i++) {
       if(_notesTree[i]) {
-        var parentDir = document.getElementById(_directoryLeafIdPrefix + _notesTree[i].parentDirectory)
+        var parentDir = document.getElementById(_directoryLeafIdPrefix + _notesTree[i].parentDirectory);
         if(parentDir) {
           var thisListElem = _directoryLeafTemplate.cloneNode(true);
-          _directoryLeafTemplate.id = _directoryLeafIdPrefix + i;
-          console.log(thisListElem);
+          thisListElem.id = _directoryLeafIdPrefix + i;
+          thisListElem.children[1].innerHTML = '<p>' + _notesTree[i].title + '</p>';
           _createLeafs(_notesTree[i].notes, thisListElem.children[0]);
           parentDir.appendChild(thisListElem);
           _notesTree.splice(i, 1);
@@ -42,6 +47,7 @@ var createTree = (function () {
       if(i > _notesTree.length - 2) {
         i = 0;
       }
+      break;
     };
   }
 
@@ -57,18 +63,27 @@ var createTree = (function () {
     }, false);
   }
 
-  function _toggleTree () {
-    if(mdNotParamHandler.getParam('tree') !== _state) {
-      if(mdNotParamHandler.getParam('tree')) {
+  function _toggleTree (newState) {
+    if(newState !== _state) {
+      if(newState) {
         _treeElem.className += ' ' + _treeToggleClass;
       } else {
         _treeElem.className = _treeElem.className.replace(' ' + _treeToggleClass, '');
       }
-      _state = mdNotParamHandler.getParam('tree');
+      _state = newState;
     }
   }
 
   return {
+    /*
+     * This creates a list of notes in .mdnot_tree
+     *
+     * @uses .mdnot_tree
+     * @uses .mdnot_tree__list
+     * @uses .markdown__textarea
+     * @uses storage.getIndex();
+     * @uses mdNotParamHandler.getParam()
+     */
     init: function () {
       _treeElem = document.querySelector('.mdnot_tree');
       _listElem = document.querySelector('.mdnot_tree__list');
@@ -77,8 +92,9 @@ var createTree = (function () {
       _createTree();
       _toggleTree();
     },
-    toggleTree: function () {
-      _toggleTree();
+    toggleTree: function (newState) {
+      newState = newState || mdNotParamHandler.getParam('tree');
+      _toggleTree(newState);
     }
   }
 });
