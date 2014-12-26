@@ -8,10 +8,11 @@ window.addEventListener('load', function () {
 }, false),
 
 createMdNotParamHandler = (function () {
-  var _params = {};
+  var _params = {},
+  _url = '';
 
-  function _parseUrl (url) {
-    var paramString = url.split('#');
+  function _parseUrl () {
+    var paramString = _url.split('#/');
     paramString = (paramString[1] ? paramString[1] : paramString[0]);
     var paramArr = paramString.split('&');
     paramArr.forEach(function (val, index, array) {
@@ -41,13 +42,21 @@ createMdNotParamHandler = (function () {
         prefix = '&';
       }
     }
-    return location.href.split('#')[0] + paramString;
+    return _url.split('#')[0] + paramString;
+  }
+
+  function _setEventListeners () {
+    window.addEventListener('hashchange', function () {
+      _url = location.href;
+      _updateURL();
+    }, false);
   }
 
   return {
     init: function (url) {
-      var url = url || location.href;
-      return _parseUrl(url);
+      _url = url || location.href;
+      _setEventListeners();
+      return _parseUrl();
     },
     getParam: function (name) {
       return _getParam(name);
