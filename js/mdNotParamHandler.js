@@ -12,13 +12,16 @@ createMdNotParamHandler = (function () {
   _url = '';
 
   function _parseUrl () {
-    var paramString = _url.split('#/');
-    paramString = (paramString[1] ? paramString[1] : paramString[0]);
-    var paramArr = paramString.split('&');
-    paramArr.forEach(function (val, index, array) {
-      var thisParam = val.split('=');
-      _params[thisParam[0]] = (thisParam[1] ? thisParam[1] : true );
-    });
+    var hashString = _url.split('#/');
+    var paramString = hashString[1] ? hashString[1].split('?') : '';
+    paramString = (paramString[1] ? paramString[1] : '');
+    if(paramString.length > 1) {
+      var paramArr = paramString.split('&');
+      paramArr.forEach(function (val, index, array) {
+        var thisParam = val.split('=');
+        _params[thisParam[0]] = (thisParam[1] ? thisParam[1] : true );
+      });
+    }
     return _params;
   }
 

@@ -15,7 +15,7 @@
   }
   QUnit.test("mdNotParamHandler", function (assert) {
     mdNotParamHandler = createMdNotParamHandler();
-    assert.ok(mdNotParamHandler.init('xyz/#/yoo')['yoo'] === true, 'init should call parseUrl, which should return an object of params');
+    assert.ok(mdNotParamHandler.init('xyz/#/?yoo')['yoo'] === true, 'init should call parseUrl, which should return an object of params');
   });
   </script>
   <div id="qunit"></div>
