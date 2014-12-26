@@ -9,11 +9,13 @@ window.addEventListener('load', function () {
 
 createMdNotParamHandler = (function () {
   var _params = {},
-  _url = '';
+  _url = '',
+  _place = '';
 
   function _parseUrl () {
     var hashString = _url.split('#/');
     var paramString = hashString[1] ? hashString[1].split('?') : '';
+    var _place = paramString[0];
     paramString = (paramString[1] ? paramString[1] : '');
     if(paramString.length > 1) {
       var paramArr = paramString.split('&');
@@ -37,8 +39,8 @@ createMdNotParamHandler = (function () {
   }
 
   function _updateURL () {
-    var paramString = '';
-    var prefix = '#';
+    var paramString = '#/' + _place;
+    var prefix = '?';
     for(var prop in _params) {
       if(_params.hasOwnProperty(prop) && _params[prop] !== false) {
         paramString += prefix + prop + (_params[prop] === true ? '' : '=' + _params[prop]);
@@ -55,6 +57,11 @@ createMdNotParamHandler = (function () {
     }, false);
   }
 
+  function _setPlace (place) {
+    _place = place;
+    return _updateURL();
+  }
+
   return {
     init: function (url) {
       _url = url || location.href;
@@ -67,5 +74,8 @@ createMdNotParamHandler = (function () {
     setParam: function (name, value) {
       return _setParam(name, value);
     },
+    setPlace: function (place) {
+      return _setPlace(place);
+    }
   }
 });
