@@ -76,6 +76,9 @@ createMdNotParamHandler = (function () {
     },
     setPlace: function (place) {
       return _setPlace(place);
-    }
+    },
+    getPlace: function () {
+      return _place;
+    },
   }
 });
