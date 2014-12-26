@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>______</title>
+  <title>mdNotStorage</title>
   <link rel="stylesheet" type="text/css" href="../lib/qunit-1.16.0.css">
   <script type="text/javascript" src="../lib/qunit-1.16.0.js"></script>
-  <script type="text/javascript" src="../js/______.js"></script>
+  <script type="text/javascript" src="../js/mdNotStorage.js"></script>
 </head>
 <body>
   <script>
-  QUint.test("______", function (assert) {
-    ______ = create______();
+  QUint.test("mdNotStorage", function (assert) {
+    mdNotStorage = createMdNotStorage();
     assert.equal(this, that, message);
   });
   </script>
