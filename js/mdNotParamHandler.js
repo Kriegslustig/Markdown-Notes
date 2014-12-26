@@ -1,3 +1,7 @@
+/*
+ * @todo Adding setPath() and getPath() which should manipulate a fake path behing #/
+ */
+
 window.addEventListener('load', function () {
   mdNotParamHandler = createMdNotParamHandler();
   mdNotParamHandler.init();
@@ -6,14 +10,15 @@ window.addEventListener('load', function () {
 createMdNotParamHandler = (function () {
   var _params = {};
 
-  function _parseUrl () {
-    var paramString = location.href.split('#');
+  function _parseUrl (url) {
+    var paramString = url.split('#');
     paramString = (paramString[1] ? paramString[1] : paramString[0]);
     var paramArr = paramString.split('&');
     paramArr.forEach(function (val, index, array) {
       var thisParam = val.split('=');
       _params[thisParam[0]] = (thisParam[1] ? thisParam[1] : true );
     });
+    return _params;
   }
 
   function _getParam (name) {
@@ -40,8 +45,9 @@ createMdNotParamHandler = (function () {
   }
 
   return {
-    init: function () {
-      return _parseUrl();
+    init: function (url) {
+      var url = url || location.href;
+      return _parseUrl(url);
     },
     getParam: function (name) {
       return _getParam(name);
