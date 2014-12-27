@@ -14,11 +14,12 @@ var createTree = (function () {
 
   _directoryLeafTemplate = _leafTemplate.cloneNode();
   _directoryLeafTemplate.className += 'mdnot_tree__leaf--directory';
-  _directoryLeafTemplate.appendChild(document.createElement('ul'));
 
   _dirLinkTemplate = document.createElement('a');
   _dirLinkTemplate.className = 'mdnot_tree__link';
   _directoryLeafTemplate.appendChild(_dirLinkTemplate);
+
+  _directoryLeafTemplate.appendChild(document.createElement('ul'));
 
   function _createLeafs (notesArr, elem) {
     notesArr.forEach(function (val, index, array) {
@@ -38,8 +39,8 @@ var createTree = (function () {
         if(parentDir) {
           var thisListElem = _directoryLeafTemplate.cloneNode(true);
           thisListElem.id = _directoryLeafIdPrefix + i;
-          thisListElem.children[1].innerHTML = '<p>' + _notesTree[i].title + '</p>';
-          _createLeafs(_notesTree[i].notes, thisListElem.children[0]);
+          thisListElem.children[0].innerHTML = _notesTree[i].title ? '<p>' + _notesTree[i].title + '</p>' : '';
+          _createLeafs(_notesTree[i].notes, thisListElem.children[1]);
           parentDir.appendChild(thisListElem);
           _notesTree.splice(i, 1);
        }
@@ -59,7 +60,7 @@ var createTree = (function () {
       _updateTree();
     }, false);
     window.addEventListener('hashchange', function () {
-      _toggleTree();
+      _toggleTree(mdNotParamHandler.getParam('tree'));
     }, false);
   }
 
@@ -90,7 +91,7 @@ var createTree = (function () {
       _textarea = document.querySelector('.markdown__textarea');
       _setEventListeners();
       _createTree();
-      _toggleTree();
+      _toggleTree(mdNotParamHandler.getParam('tree'));
     },
     toggleTree: function (newState) {
       newState = newState || mdNotParamHandler.getParam('tree');
