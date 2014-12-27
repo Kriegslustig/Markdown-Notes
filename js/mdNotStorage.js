@@ -46,8 +46,8 @@ var createMdNotStorage = (function () {
           mdNotCrypto.decrypt(false, note.content, function (content) {
             note.content = content;
             // Untill everything is indexed also: will this work?
-            note.directory = (note.directory == undefined ? 0 : note.directory);
-            _noteIndex.push(note);
+            note.directory = note.directory || 0;
+            _noteIndex[note.index] = note;
           });
         }
       } else if(key.indexOf(_directoryPrefix) > -1) {
@@ -71,7 +71,9 @@ var createMdNotStorage = (function () {
 
   function _updateTree () {
     for (var i = 0; i < _notesTree.length; i++) {
-      _notesTree[i].notes = [];
+      if(_notesTree[i]) {
+        _notesTree[i].notes = [];
+      }
     };
 
     // Pushing all notes to a flat array of directories
@@ -81,7 +83,7 @@ var createMdNotStorage = (function () {
   }
 
   function _save (content, title, index, directory) {
-    directory = (directory == 'undefined' ? 0 : directory);
+    directory = directory || 0;
     index = index || _noteIndex.length;
     title = title || index;
     var note = {
@@ -101,6 +103,7 @@ var createMdNotStorage = (function () {
       _notesTree[0].notes.push(note);
     }
     _noteIndex[index] = note;
+    console.log(_noteIndex);
     _loadItem(index);
     _saveToStorage(index, note);
   }
@@ -128,7 +131,7 @@ var createMdNotStorage = (function () {
       _textarea.id = _noteIndex[index].index;
       _textarea.attributes.title = _noteIndex[index].title;
       _textarea.value = _noteIndex[index].content;
-      _textarea.setAttribute('data-direcory', _noteIndex[index].directory);
+      _textarea.setAttribute('data-directory', _noteIndex[index].directory);
     } else {
       _save('', index, index);
     }
@@ -144,6 +147,7 @@ var createMdNotStorage = (function () {
       localStorage.setItem(_notePrefix + index, JSON.stringify({
         index: note.index,
         title: note.title,
+        directory: note.directory,
         content: content,
       }));
     });
