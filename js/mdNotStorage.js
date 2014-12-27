@@ -103,7 +103,6 @@ var createMdNotStorage = (function () {
       _notesTree[0].notes.push(note);
     }
     _noteIndex[index] = note;
-    console.log(_noteIndex);
     _loadItem(index);
     _saveToStorage(index, note);
   }
