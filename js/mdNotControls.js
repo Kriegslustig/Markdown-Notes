@@ -54,6 +54,10 @@ var createControls = (function () {
       _commandLine.value = 'decrypt: ';
       _commandLine.focus();
     },
+    'F': function () {
+      _commandLine.value = 'put into directory: ';
+      _commandLine.focus();
+    },
   },
   _numberKeys = ['0','1','2','3','4','5','6','7','8','9'],
   _commands = {
@@ -74,6 +78,19 @@ var createControls = (function () {
       mdNotCrypto.decrypt(password, _textarea.value, function (returnStr) {
         _textarea.value = returnStr;
       });
+    },
+    'put into directory': function (directory) {
+      direcotryId = false;
+      if(direcotryId = storage.getDirectoryId(directory)) {
+        _textarea.setAttribute('data-directory', direcotryId);
+        _textarea.dispatchEvent(_events.save);
+      }
+    },
+    'create directory': function (directory) {
+      if(storage.getDirectoryId(directory) === false) {
+        storage.createDirectory(directory);
+        _textarea.dispatchEvent(_events.save);
+      }
     },
   },
   _helpToggleClass = 'markdown__help--open',
@@ -248,7 +265,7 @@ var createControls = (function () {
   }
 });
 
-var storage = createStorage();
+var storage = createMdNotStorage();
 var mdNotTree = createTree();
 var controls = createControls();
 var markElem = createMarkElement();

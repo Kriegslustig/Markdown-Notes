@@ -13,13 +13,13 @@
  * }
  */
 
-var createStorage = (function () {
+var createMdNotStorage = (function () {
   var _noteIndex = [],
   _directoryIndex = [],
   _notesTree = [
     {
       notes: [],
-      parentDirectory: 0
+      parentDirectory: 'r'
     }
   ],
   _notePrefix = 'note_',
@@ -27,6 +27,12 @@ var createStorage = (function () {
   _textarea,
   _events = {};
 
+  /**
+  This function loads all notes and directories into _noteIndex and _directoryIndex
+
+  @uses mdNotCrypto.isEncrypted()
+  @uses mdNotCrypto.decrypt()
+  */
   function _loadNotes () {
     _noteIndex = [];
     _directoryIndex = [];
@@ -77,35 +83,6 @@ var createStorage = (function () {
         _notesTree[val.directory].notes.push(val);
       }
     });
-
-    // while (tempDirIndex.length > 0) {
-    //   tempDirIndex.forEach(function (val, i, arr) {
-    //     var result = _addDirToTree(val, _notesTree);
-    //     if(result[0]) {
-    //       _notesTree = result[1];
-    //       tempDirIndex.splice(i, 1);
-    //     }
-    //   });
-    // }
-  }
-
-  function _addDirToTree (addThisDir, tree) {
-    var found = false;
-    tree.forEach(function (val, i, arr) {
-      if(i === addThisDir.parentDirectory) {
-        tree[i].dirs.push(addThisDir);
-        found = true;
-        return false;
-      } else {
-        var result = _addDirToTree(addThisDir, tree[i].dirs);
-        if(result[0]) {
-          tree = result[1]
-          found = true;
-          return false;
-        }
-      }
-    });
-    return [found, tree];
   }
 
   function _save (content, title, index, directory) {
@@ -116,6 +93,7 @@ var createStorage = (function () {
       index: index,
       title: title,
       content: content,
+      directory: directory
     };
     _noteIndex[index] = note;
     _loadItem(index);
@@ -124,7 +102,7 @@ var createStorage = (function () {
 
   function _setEventListeners () {
     _textarea.addEventListener('save', function () {
-      _save(_textarea.value, _textarea.attributes.title, _textarea.id);
+      _save(_textarea.value, _textarea.attributes.title, _textarea.id, parseInt(_textarea.getAttribute('data-direcory')));
     }, false);
 
     _events.change = new CustomEvent('change');
@@ -145,6 +123,7 @@ var createStorage = (function () {
       _textarea.id = _noteIndex[index].index;
       _textarea.attributes.title = _noteIndex[index].title;
       _textarea.value = _noteIndex[index].content;
+      _textarea.setAttribute('data-direcory', _noteIndex[index].directory);
     } else {
       _save('', index, index);
     }
@@ -180,12 +159,14 @@ var createStorage = (function () {
       _textarea = document.querySelector('.markdown__textarea');
       _setEventListeners();
       _loadNotes();
+      return [_noteIndex, _directoryIndex];
     },
     loadItem: function (index) {
       _loadItem(index);
     },
     getIndex: function () {
       _updateTree();
+      console.log(_notesTree);
       return _notesTree;
     },
     newNote: function () {
@@ -196,5 +177,26 @@ var createStorage = (function () {
     deleteNote: function (index) {
       _removeItem(index)
     },
+    getDirectoryId: function (directory) {
+      var returnVal = false;
+      _directoryIndex.forEach(function (val, i, arr) {
+        if(val.title === directory) {
+          returnVal = val.index;
+          return false;
+        }
+      });
+      return returnVal;
+    },
+    createDirectory: function (directory, parentDir, id) {
+      var index = id || _directoryIndex.length,
+      newDirectory = {
+        title: directory,
+        index: index,
+        parentDirectory: parentDir || 0,
+      }
+      localStorage.setItem(_directoryPrefix + index, JSON.stringify(newDirectory));
+      _loadNotes();
+      _updateTree();
+    }
   }
 });
