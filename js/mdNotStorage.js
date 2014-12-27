@@ -16,12 +16,7 @@
 var createMdNotStorage = (function () {
   var _noteIndex = [],
   _directoryIndex = [],
-  _notesTree = [
-    {
-      notes: [],
-      parentDirectory: 'r'
-    }
-  ],
+  _notesTree,
   _notePrefix = 'note_',
   _directoryPrefix = 'directory_',
   _textarea,
@@ -34,8 +29,13 @@ var createMdNotStorage = (function () {
   @uses mdNotCrypto.decrypt()
   */
   function _loadNotes () {
+    _notesTree = [
+      {
+        notes: [],
+        parentDirectory: 'r'
+      }
+    ];
     _noteIndex = [];
-    _directoryIndex = [];
 
     i = 0;
     while(key = localStorage.key(i)) {
@@ -54,8 +54,7 @@ var createMdNotStorage = (function () {
         var directory = {};
         directory = JSON.parse(localStorage.getItem(key));
         directory.notes = [];
-        directory.dirs = [];
-        _directoryIndex.push(directory);
+        _notesTree.push(directory);
       }
       i++;
     }
@@ -71,30 +70,36 @@ var createMdNotStorage = (function () {
    */
 
   function _updateTree () {
-    var tempDirIndex = _directoryIndex;
+    for (var i = 0; i < _notesTree.length; i++) {
+      _notesTree[i].notes = [];
+    };
 
     // Pushing all notes to a flat array of directories
     _noteIndex.forEach(function (val, i, arr) {
-      if(!_notesTree[val.directory]) {
-        _notesTree[val.directory] = {
-          notes: [val],
-        }
-      } else {
-        _notesTree[val.directory].notes.push(val);
-      }
+      _notesTree[val.directory].notes.push(val);
     });
   }
 
   function _save (content, title, index, directory) {
-    index = (index == 'undefined' ? _noteIndex.length : index);
-    title = (title == 'undefined' ? index : title);
     directory = (directory == 'undefined' ? 0 : directory);
+    index = index || _noteIndex.length;
+    title = title || index;
     var note = {
       index: index,
       title: title,
       content: content,
       directory: directory
     };
+    if(directory !== 0) {
+      _notesTree.forEach(function (val, i, arr) {
+        if(val.index === directory) {
+          return false;
+          _notesTree[i].notes.push(note);
+        }
+      });
+    } else {
+      _notesTree[0].notes.push(note);
+    }
     _noteIndex[index] = note;
     _loadItem(index);
     _saveToStorage(index, note);
@@ -102,7 +107,7 @@ var createMdNotStorage = (function () {
 
   function _setEventListeners () {
     _textarea.addEventListener('save', function () {
-      _save(_textarea.value, _textarea.attributes.title, _textarea.id, parseInt(_textarea.getAttribute('data-direcory')));
+      _save(_textarea.value, _textarea.attributes.title, _textarea.id, parseInt(_textarea.getAttribute('data-directory')));
     }, false);
 
     _events.change = new CustomEvent('change');
@@ -159,14 +164,13 @@ var createMdNotStorage = (function () {
       _textarea = document.querySelector('.markdown__textarea');
       _setEventListeners();
       _loadNotes();
-      return [_noteIndex, _directoryIndex];
+      return [_noteIndex, _notesTree];
     },
     loadItem: function (index) {
       _loadItem(index);
     },
     getIndex: function () {
       _updateTree();
-      console.log(_notesTree);
       return _notesTree;
     },
     newNote: function () {
@@ -179,7 +183,7 @@ var createMdNotStorage = (function () {
     },
     getDirectoryId: function (directory) {
       var returnVal = false;
-      _directoryIndex.forEach(function (val, i, arr) {
+      _notesTree.forEach(function (val, i, arr) {
         if(val.title === directory) {
           returnVal = val.index;
           return false;
@@ -188,15 +192,14 @@ var createMdNotStorage = (function () {
       return returnVal;
     },
     createDirectory: function (directory, parentDir, id) {
-      var index = id || _directoryIndex.length,
+      var index = id || _notesTree.length,
       newDirectory = {
         title: directory,
         index: index,
-        parentDirectory: parentDir || 0,
+        parentDirectory: parentDir || 'r',
       }
       localStorage.setItem(_directoryPrefix + index, JSON.stringify(newDirectory));
       _loadNotes();
-      _updateTree();
     }
   }
 });

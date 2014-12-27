@@ -30,34 +30,39 @@ var createTree = (function () {
   }
 
   function _createTree () {
+    _notesTree = storage.getIndex(),
+    filteredTree = [0];
     _listElem.innerHTML = '';
-    _notesTree = storage.getIndex();
     _listElem.id = _directoryLeafIdPrefix + 'r';
-    for (var i = 0; _notesTree.length > 0; i++) {
-      if(_notesTree[i]) {
-        var parentDir = document.getElementById(_directoryLeafIdPrefix + _notesTree[i].parentDirectory);
-        if(parentDir) {
+    while(filteredTree.length > 0) {
+      filteredTree = _notesTree.filter(_hasParent);
+      break;
+    }
+  }
+
+  function _hasParent (val) {
+    if(element = document.getElementById(_directoryLeafIdPrefix + val.parentDirectory)) {
+      setTimeout(function () { {
           var thisListElem = _directoryLeafTemplate.cloneNode(true);
           thisListElem.id = _directoryLeafIdPrefix + i;
-          thisListElem.children[0].innerHTML = _notesTree[i].title ? '<p>' + _notesTree[i].title + '</p>' : '';
-          _createLeafs(_notesTree[i].notes, thisListElem.children[1]);
-          parentDir.appendChild(thisListElem);
-          _notesTree.splice(i, 1);
-       }
-      }
-      if(i > _notesTree.length - 2) {
-        i = 0;
-      }
-      break;
-    };
+          thisListElem.children[0].innerHTML = val.title ? '<p>' + val.title + '</p>' : '';
+          _createLeafs(val.notes, thisListElem.children[1]);
+          element.appendChild(thisListElem);
+        }
+      }, 1);
+      return false;
+    } else {
+      // return val;
+      return val;
+    }
   }
 
   function _setEventListeners () {
     _textarea.addEventListener('save', function () {
-      _updateTree();
+      _createTree();
     }, false);
     _textarea.addEventListener('delete', function () {
-      _updateTree();
+      _createTree();
     }, false);
     window.addEventListener('hashchange', function () {
       _toggleTree(mdNotParamHandler.getParam('tree'));

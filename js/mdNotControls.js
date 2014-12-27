@@ -29,8 +29,7 @@ var createControls = (function () {
       }
     },
     'N': function () {
-      var newIndex = storage.newNote();
-      _openNote(newIndex);
+      storage.newNote();
     },
     'H': function () {
       _toggleHelp();
@@ -86,7 +85,7 @@ var createControls = (function () {
         _textarea.dispatchEvent(_events.save);
       }
     },
-    'create directory': function (directory) {
+    'mkdir': function (directory) {
       if(storage.getDirectoryId(directory) === false) {
         storage.createDirectory(directory);
         _textarea.dispatchEvent(_events.save);
